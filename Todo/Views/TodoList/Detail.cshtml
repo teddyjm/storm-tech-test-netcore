@@ -19,6 +19,12 @@
             </a>
         </li>
 
+        <form method="get" class="inline">
+            @Html.HiddenFor(m => m.TodoListId)
+            <label>@Html.CheckBoxFor(m => m.ShowDone)&nbsp;@Html.DisplayNameFor(m => m.ShowDone)</label>
+            <button type="submit" class="btn">Filter</button>
+        </form>
+
         @foreach (var item in Model.Items)
         {
             string contextualClass;

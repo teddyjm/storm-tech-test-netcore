@@ -16,14 +16,14 @@ namespace Todo.Services
                 .Where(tl => tl.Owner.Id == userId);
         }
 
-        public static TodoList SingleTodoList<SortKeyType>(this ApplicationDbContext dbContext, int todoListId, Expression<Func<TodoItem, SortKeyType>> sortItemsBy)
+        public static TodoList SingleTodoList<SortKeyType>(this ApplicationDbContext dbContext, int todoListId, Expression<Func<TodoItem, SortKeyType>> sortItemsBy, bool includeDoneItems)
         {
             var todoList = dbContext.TodoLists.Include(tl => tl.Owner)
                 .Include(tl => tl.Items)
                 .ThenInclude(ti => ti.ResponsibleParty)
                 .Single(tl => tl.TodoListId == todoListId);
 
-            todoList.Items = todoList.Items.AsQueryable().OrderBy(sortItemsBy).ToList();
+            todoList.Items = todoList.Items.AsQueryable().Where(item => includeDoneItems || !item.IsDone).OrderBy(sortItemsBy).ToList();
 
             return todoList;
         }

@@ -23,7 +23,7 @@ namespace Todo.Controllers
         [HttpGet]
         public IActionResult Create(int todoListId)
         {
-            var todoList = dbContext.SingleTodoList(todoListId, i => i.Importance.GetDisplayOrder());
+            var todoList = dbContext.SingleTodoList(todoListId, i => i.Importance.GetDisplayOrder(), true);
             var fields = TodoItemCreateFieldsFactory.Create(todoList, User.Id());
             return View(fields);
         }
