@@ -6,11 +6,12 @@
 
 @{
     ViewData["Title"] = $"List: {Model.Title}";
+    var items = Model.Items.ToList();
 }
 
 <h2>@ViewData["Title"]</h2>
 
-<div class="col-md-6">
+<div class="col-md-10">
 
     <ul class="list-group">
 
@@ -34,8 +35,11 @@
             <button type="submit" class="btn">Show</button>
         </form>
 
-        @foreach (var item in Model.Items)
+        @for (int i=0; i < items.Count; i++)
         {
+            var item = items[i];
+            var moveUpRank = i > 0 ? items[i - 1].Rank - 1 : 0;
+            var moveDownRank = i < items.Count - 1 ? items[i + 1].Rank + 1 : item.Rank;
             string contextualClass;
             switch (item.Importance)
             {
@@ -54,7 +58,7 @@
 
                 <div class="row">
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <a asp-action="Edit" asp-controller="TodoItem" asp-route-todoItemId="@item.TodoItemId">
 
                             @if (item.IsDone)
@@ -68,7 +72,7 @@
                         </a>
                     </div>
 
-                    <div class="col-md-6 text-right">
+                    <div class="col-md-4 text-right">
                         <small>
                             @item.ResponsibleParty.UserName
                             @{
@@ -78,6 +82,21 @@
                             @gravatarProfile?.DisplayName
                         </small>
                     </div>
+                    @if (Model.SortItemsBy == Todo.Models.TodoItems.TodoItemsSortOption.ByRank)
+                    {
+                <div class="col-md-4">
+                    @if (i > 0)
+                    {
+                        <button id="moveUpRankButton" type="button" class="btn btn-xs updateRankButton" data-todo-item-id="@item.TodoItemId" data-rank="@moveUpRank">Move up</button>
+                    }
+                    @if (i < items.Count - 1)
+                    {
+                        <button id="moveDownRankButton" type="button" class="btn btn-xs updateRankButton" data-todo-item-id="@item.TodoItemId" data-rank="@moveDownRank">Move down</button>
+                    }
+
+                </div>
+                    }
+
                 </div>
 
             </li>
@@ -87,4 +106,5 @@
 
 @section Scripts {
     <script src="~/js/createItemModal.js" asp-append-version="true"></script>
+    <script src="~/js/detail.js" asp-append-version="true"></script>
 }
