@@ -15,9 +15,7 @@
     <ul class="list-group">
 
         <li class="list-group-item">
-            <a asp-action="Create" asp-controller="TodoItem" asp-route-todoListId="@Model.TodoListId">
-                <strong>Add New Item</strong>
-            </a>
+            <partial name="CreateItemModal" model="Model.NewTaskModel"/>
         </li>
 
         <form method="get" class="form-inline">
@@ -86,3 +84,7 @@
         }
     </ul>
 </div>
+
+@section Scripts {
+    <script src="~/js/createItemModal.js" asp-append-version="true"></script>
+}

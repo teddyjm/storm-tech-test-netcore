@@ -15,13 +15,16 @@ namespace Todo.Models.TodoLists
         [Display(Name = "Sort by")]
         public TodoItemsSortOption SortItemsBy { get; set; }
 
-        public TodoListDetailViewmodel(int todoListId, string title, ICollection<TodoItemSummaryViewmodel> items, bool showDone, TodoItemsSortOption sortItemsBy)
+        public TodoItemCreateFields NewTaskModel { get; set; }
+
+        public TodoListDetailViewmodel(int todoListId, string title, ICollection<TodoItemSummaryViewmodel> items, bool showDone, TodoItemsSortOption sortItemsBy, TodoItemCreateFields newTaskModel)
         {
             Items = items;
             TodoListId = todoListId;
             Title = title;
             ShowDone = showDone;
             SortItemsBy = sortItemsBy;
+            NewTaskModel = newTaskModel;
         }
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Todo.Data;
 using Todo.Data.Entities;
+using Todo.EntityModelMappers.TodoItems;
 using Todo.EntityModelMappers.TodoLists;
 using Todo.Models.TodoItems;
 using Todo.Models.TodoLists;
@@ -49,8 +50,9 @@ namespace Todo.Controllers
                 default:
                     throw new NotSupportedException($"Sorting by {sortItemsBy.ToString()} is not supported");
             }
-
-            var viewmodel = TodoListDetailViewmodelFactory.Create(todoList, showDone, sortItemsBy);
+            
+            var newItemModel = TodoItemCreateFieldsFactory.Create(todoList, User.Id());
+            var viewmodel = TodoListDetailViewmodelFactory.Create(todoList, showDone, sortItemsBy, newItemModel);
             return View(viewmodel);
         }
 
