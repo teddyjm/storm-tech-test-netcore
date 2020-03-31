@@ -20,6 +20,7 @@ namespace Todo.Tests
                 ;
 
             srcTodoItem = todoList.Items.First();
+            srcTodoItem.Rank = 5;
 
             resultFields = TodoItemEditFieldsFactory.Create(srcTodoItem);
         }
@@ -40,6 +41,12 @@ namespace Todo.Tests
         public void EqualImportance()
         {
             Assert.Equal(srcTodoItem.Importance, resultFields.Importance);
+        }
+
+        [Fact]
+        public void EqualRank()
+        {
+            Assert.Equal(srcTodoItem.Rank, resultFields.Rank);
         }
     }
 }

@@ -12,12 +12,16 @@ namespace Todo.Models.TodoLists
         [Display(Name = "Show done")]
         public bool ShowDone { get; set; }
 
-        public TodoListDetailViewmodel(int todoListId, string title, ICollection<TodoItemSummaryViewmodel> items, bool showDone)
+        [Display(Name = "Sort by")]
+        public TodoItemsSortOption SortItemsBy { get; set; }
+
+        public TodoListDetailViewmodel(int todoListId, string title, ICollection<TodoItemSummaryViewmodel> items, bool showDone, TodoItemsSortOption sortItemsBy)
         {
             Items = items;
             TodoListId = todoListId;
             Title = title;
             ShowDone = showDone;
+            SortItemsBy = sortItemsBy;
         }
     }
 }

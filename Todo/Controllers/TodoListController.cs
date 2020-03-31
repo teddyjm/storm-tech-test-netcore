@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Todo.Data;
 using Todo.Data.Entities;
 using Todo.EntityModelMappers.TodoLists;
+using Todo.Models.TodoItems;
 using Todo.Models.TodoLists;
 using Todo.Services;
 using Todo.Utils;
@@ -32,10 +34,23 @@ namespace Todo.Controllers
             return View(viewmodel);
         }
 
-        public IActionResult Detail(int todoListId, bool showDone = true)
+        public IActionResult Detail(int todoListId, bool showDone = true, TodoItemsSortOption sortItemsBy = TodoItemsSortOption.ByImportance)
         {
-            var todoList = dbContext.SingleTodoList(todoListId, i => i.Importance.GetDisplayOrder(), showDone);
-            var viewmodel = TodoListDetailViewmodelFactory.Create(todoList, showDone);
+            TodoList todoList = null;
+            
+            switch(sortItemsBy)
+            {
+                case TodoItemsSortOption.ByImportance:
+                    todoList = dbContext.SingleTodoList(todoListId, i => i.Importance.GetDisplayOrder(), showDone);
+                    break;
+                case TodoItemsSortOption.ByRank:
+                    todoList = dbContext.SingleTodoList(todoListId, i => i.Rank, showDone);
+                    break;
+                default:
+                    throw new NotSupportedException($"Sorting by {sortItemsBy.ToString()} is not supported");
+            }
+
+            var viewmodel = TodoListDetailViewmodelFactory.Create(todoList, showDone, sortItemsBy);
             return View(viewmodel);
         }
 
