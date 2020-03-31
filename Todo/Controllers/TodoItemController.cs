@@ -6,6 +6,7 @@ using Todo.Data.Entities;
 using Todo.EntityModelMappers.TodoItems;
 using Todo.Models.TodoItems;
 using Todo.Services;
+using Todo.Utils;
 
 namespace Todo.Controllers
 {
@@ -22,7 +23,7 @@ namespace Todo.Controllers
         [HttpGet]
         public IActionResult Create(int todoListId)
         {
-            var todoList = dbContext.SingleTodoList(todoListId);
+            var todoList = dbContext.SingleTodoList(todoListId, i => i.Importance.GetDisplayOrder());
             var fields = TodoItemCreateFieldsFactory.Create(todoList, User.Id());
             return View(fields);
         }

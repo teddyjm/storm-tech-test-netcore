@@ -8,6 +8,7 @@ using Todo.Data.Entities;
 using Todo.EntityModelMappers.TodoLists;
 using Todo.Models.TodoLists;
 using Todo.Services;
+using Todo.Utils;
 
 namespace Todo.Controllers
 {
@@ -33,7 +34,7 @@ namespace Todo.Controllers
 
         public IActionResult Detail(int todoListId)
         {
-            var todoList = dbContext.SingleTodoList(todoListId);
+            var todoList = dbContext.SingleTodoList(todoListId, i => i.Importance.GetDisplayOrder());
             var viewmodel = TodoListDetailViewmodelFactory.Create(todoList);
             return View(viewmodel);
         }
